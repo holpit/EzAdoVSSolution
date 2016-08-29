@@ -1,0 +1,7 @@
+﻿CREATE SCHEMA [ezado] AUTHORIZATION [dbo];
+GO;
+
+GRANT EXECUTE ON SCHEMA::[ezado] TO [ezado]
+GO;
+
+
