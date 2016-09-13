@@ -1,7 +1,7 @@
-# REST-SQL
+# EzAdo
 
 ## What is it?
-REST-SQL Objects + Naming Convention + Procedure \*annotations\* + Validators = a very simplified but robust and secure way of interfacing with Sql Server. It is an attempt to remove as much of the mundane code of setting parameters, executing procedures, processing results, and ulimately returning results to client applications.
+EzAdo Objects + Naming Convention + Procedure \*annotations\* + Validators = a very simplified but robust and secure way of interfacing with Sql Server. It is an attempt to remove as much of the mundane code of setting parameters, executing procedures, processing results, and ulimately returning results to client applications.
 
 ##Who is it for?
 If your organization relies heavily on stored procedures this is for you.  If your developing a lot of rest services that primarly interface with Sql Server this is for you. If you are completely satisfied with a tool like EntityFramework you may want to bail, as this is favors developers who lean towards SQL.  In fact if you are a DBA type person, you are gonna love this.
