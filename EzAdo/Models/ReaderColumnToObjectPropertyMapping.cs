@@ -4,20 +4,24 @@ using System.Reflection;
 namespace EzAdo.Models
 {
     /// <summary>
-    /// A ReaderColumnToObjectPropertyMapping is utilized in the Execute T calls when the response is not a json result and the object does not implement IExplicit.
-    /// The mapping aligns the SqlDataReader column to a property in a C# object where
-    /// object.ColumnName = SqlDataReader["COLUMN_NAME"]. That alignment is used to set the ordinal position in the mapping.
+    /// A ReaderColumnToObjectPropertyMapping is utilized in the Execute T calls when the response is
+    /// not a json result and the object does not implement IExplicit. The mapping aligns the
+    /// SqlDataReader column to a property in a C# object where Proper case aligns to underscore case as in
+    /// object.ColumnName = SqlDataReader["COLUMN_NAME"]. That alignment is used to set the ordinal position in the
+    /// mapping.
     /// </summary>
     public class ReaderColumnToObjectPropertyMapping
     {
+
+        /// <summary>   The ordinal position of the data reader. </summary>
         private int _position;
+
+        /// <summary>   The propert info responsible for the set value call. </summary>
         private PropertyInfo _property;
-       
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="position">Ordinal position of the reader</param>
-        /// <param name="property">Property info of the class</param>
+
+        /// <summary>   Constructor. </summary>
+        /// <param name="position"> Ordinal position of the reader with the object property value. </param>
+        /// <param name="property"> Property info utilized for the setting or the value from the reader. </param>
         public ReaderColumnToObjectPropertyMapping(int position, PropertyInfo property)
         {
             _position = position;
@@ -25,10 +29,10 @@ namespace EzAdo.Models
         }
 
         /// <summary>
-        /// Sets the property of object represented by property info to value of reader at position
+        /// Sets the property of object represented by property info to value of reader at position.
         /// </summary>
-        /// <param name="obj">Object to set the property on</param>
-        /// <param name="rdr">SqlDataReader with value at index of position</param>
+        /// <param name="obj">  Object to set the property on. </param>
+        /// <param name="rdr">  SqlDataReader with value at index of position. </param>
         public void SetValue(object obj, SqlDataReader rdr)
         {
             if(!rdr.IsDBNull(_position))

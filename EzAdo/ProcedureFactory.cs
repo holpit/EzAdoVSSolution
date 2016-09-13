@@ -7,33 +7,38 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using EzAdo.Converters;
 
 namespace EzAdo
 {
+    /// <summary>   Procedure factory queries db for stored procedure available for consumption, as well as table definitions.  That 
+    ///             data is used in the construction of the procedures available to the clients. </summary>
     public static class ProcedureFactory
     {
         #region |Private Collections|
 
-        //All the procedures that were loaded from ezado.PROCEDURES
+        /// <summary>   All the procedures that were loaded from ezado.PROCEDURES. </summary>
         private static Dictionary<string, Procedure> _procedures;
 
-        //The set of connection strings from app config
+        /// <summary>   The set of connection strings from app config. </summary>
         private static Dictionary<string, string> _connectionStrings;
 
-        //Cache of result column -> object property - used to  set object values from result sets
+        // Cache of result column -> object property - used to  set object values from result sets. 
         private static Dictionary<string, ReaderColumnToObjectPropertyMapping[]> _readerColumnToObjectPropertyMappings;
 
-        //All the data tables that were loaded from ezado.USER_DEFINED_TABLES
+        /// <summary>   All the data tables that were loaded from ezado.USER_DEFINED_TABLES. </summary>
         private static Dictionary<string, DataTable> _dataTables;
 
-        //Cache of object.property -> parameter - used to set parameter values from object
+        /// <summary>
+        /// Cache of object.property -> parameter - used to set parameter values from object.
+        /// </summary>
         private static Dictionary<string, ObjectPropertyToParameterNameMapping[]> _objectPropertyToParameterNameMappings;
-        
+
+
+        private static DataTable _schemas;
+
         #endregion
 
         #region |Constructors|
@@ -49,13 +54,14 @@ namespace EzAdo
         #endregion
 
         #region |Access Methods|
-
         /// <summary>
-        /// Clones a cached Procedure where the procedure is identified by the combination of schema and name.
+        /// Clones a cached Procedure where the procedure is identified by the combination of schema and
+        /// name.
         /// </summary>
-        /// <param name="specificSchema">Left side of sql stored procedure [schema].[procedure]</param>
-        /// <param name="specificName">Right side of sql stored procedure [schema].[procedure]</param>
-        /// <returns>REST-SQL.Procedure</returns>
+        /// <exception cref="IndexOutOfRangeException"> No Procedure was found by the converted name. </exception>
+        /// <param name="specificSchema">   Left side of sql stored procedure [schema].[procedure]. </param>
+        /// <param name="specificName">   Right side of sql stored procedure [schema].[procedure]. </param>
+        /// <returns>   EzAdo.Procedure. </returns>
         public static Procedure GetProcedure(string specificSchema, string specificName)
         {
             string procedureName = $"[{specificSchema}].[{specificName}]";
@@ -63,35 +69,32 @@ namespace EzAdo
             {
                 throw new IndexOutOfRangeException($"No Procedure was found by the converted name {procedureName}");
             }
-            Procedure source = _procedures[procedureName];
-            IFormatter formatter = new BinaryFormatter();
-            Stream stream = new MemoryStream();
-            formatter.Serialize(stream, source);
-            stream.Seek(0, SeekOrigin.Begin);
-            return (Procedure)formatter.Deserialize(stream);
+            return _procedures[procedureName].Clone();
         }
 
         /// <summary>
-        /// Clones a cached RestProcedure where the procedure is identified by the combination of method, schema and name in the format METHOD_SCHEMA.NAME
+        /// Clones a cached RestProcedure where the procedure is identified by the combination of method,
+        /// schema and name in the format METHOD_SCHEMA.NAME.
         /// </summary>
-        /// <param name="method">GET|PUT|POST|DELETE</param>
-        /// <param name="specificSchema">Left side of sql stored procedure [schema].[method_procedure]</param>
-        /// <param name="specificName">procedure part of sql stored procedure [schema].[method_procedure]</param>
-        /// <returns>REST-SQL.RestProcedure</returns>
+        /// <param name="method">           GET|PUT|POST|DELETE. </param>
+        /// <param name="specificSchema"> Left side of sql stored procedure [schema].[method_procedure]. </param>
+        /// <param name="specificName">   procedure part of sql stored procedure
+        /// [schema].[method_procedure]. </param>
+        /// <returns>   EzAdo.RestProcedure. </returns>
         public static Procedure GetRestProcedure(string method, string specificSchema, string specificName)
         {
             return GetProcedure(specificSchema, $"{method}_{specificName.ToUnderscore()}");
         }
-
+        
 
         /// <summary>
         /// Gets the ReaderColumnToObjectPropertyMapping[] for the given reader and procedure.
         /// </summary>
-        /// <typeparam name="T">Type of object the reader is mapping to.</typeparam>
-        /// <param name="specificSchema">Left side of sql stored procedure [schema].[procedure]</param>
-        /// <param name="specificName">Right side of sql stored procedure [schema].[procedure]</param>
-        /// <param name="rdr">An SqlDataReader that was populate via the procedure call represented by schmema and name</param>
-        /// <returns>The generated or cached array of column mappings</returns>
+        /// <typeparam name="T">    Type of object the reader is mapping to. </typeparam>
+        /// <param name="procedureName">    Left side of sql stored procedure [schema].[procedure]. </param>
+        /// <param name="rdr">           An SqlDataReader that was populate via the procedure call
+        /// represented by schmema and name. </param>
+        /// <returns>   The generated or cached array of column mappings. </returns>
         public static ReaderColumnToObjectPropertyMapping[] GetReaderColumnToObjectPropertyMappings<T>(string procedureName, SqlDataReader rdr)
         {
             string mappingName = $"[{procedureName}].T{typeof(T).ToString()}";
@@ -120,14 +123,12 @@ namespace EzAdo
             return _readerColumnToObjectPropertyMappings[mappingName];
         }
 
-
         /// <summary>
         /// Gets the ObjectPropertyToParameterNameMapping[] for the given object type and procedure.
         /// </summary>
-        /// <typeparam name="T">Type of object the procedure parameters are mapping to.</typeparam>
-        /// <param name="specificSchema">Left side of sql stored procedure [schema].[procedure]</param>
-        /// <param name="specificName">Right side of sql stored procedure [schema].[procedure]</param>
-        /// <returns>The generated or cached array of ObjectPropertyToParameterNameMapping</returns>
+        /// <typeparam name="T">    Type of object the procedure parameters are mapping to. </typeparam>
+        /// <param name="procedureName">    Left side of sql stored procedure [schema].[procedure]. </param>
+        /// <returns>   The generated or cached array of ObjectPropertyToParameterNameMapping. </returns>
         public static ObjectPropertyToParameterNameMapping[] GetParameterMapping<T>(string procedureName)
         {
             string mappingName = $"{procedureName}].T{typeof(T).ToString()}";
@@ -153,13 +154,12 @@ namespace EzAdo
             return _objectPropertyToParameterNameMappings[mappingName];
         }
 
-
         /// <summary>
-        /// Clones a cached DataTable where the data table is identified by the combination of schema and name in the format SCHEMA.USER_DEFINED_TABLE_TYPE
+        /// Clones a cached DataTable where the data table is identified by the combination of schema and
+        /// name in the format SCHEMA.USER_DEFINED_TABLE_TYPE.
         /// </summary>
-        /// <param name="specificSchema">Left side of sql user defined table type [schema].[USER_DEFINED_TABLE_TYPE]</param>
-        /// <param name="specificName">Right side of sql user defined table type [schema].[USER_DEFINED_TABLE_TYPE]</param>
-        /// <returns>System.Data.DataTable</returns>
+        /// <param name="dataTableName"> Fully qualified UDT [schema].[USER_DEFINED_TABLE_TYPE]. </param>
+        /// <returns>   System.Data.DataTable. </returns>
         public static DataTable GetDataTable(string dataTableName)
         {
             DataTable source = _dataTables[dataTableName];
@@ -174,9 +174,7 @@ namespace EzAdo
             return target;
         }
 
-        /// <summary>
-        /// Clears all cached data and repopulates the collections
-        /// </summary>
+        /// <summary>   Clears all cached data and repopulates the collections. </summary>
         public static void Rebuild()
         {
             init();
@@ -186,9 +184,7 @@ namespace EzAdo
 
         #region |Private Methods|
 
-        /// <summary>
-        /// Initializes the collections
-        /// </summary>
+        /// <summary>   Initializes the collections and builds out objects for cloning </summary>
         private static void init()
         {
             _procedures = new Dictionary<string, Procedure>();
@@ -204,28 +200,30 @@ namespace EzAdo
             loadDataTables();
         }
 
-        /// <summary>
-        /// Populates _connectionStrings
-        /// </summary>
+        /// <summary>   Populates _connectionStrings and _schemas </summary>
         private static void getConnectionStrings()
         {
             _connectionStrings = new Dictionary<string, string>();
             ConfigurationManager.RefreshSection("connectionStrings");
 
+            _schemas = new DataTable();
+            _schemas.Columns.Add("SCHEMA_NAME", typeof(string));
+
             foreach (ConnectionStringSettings connectionStringSetting in ConfigurationManager.ConnectionStrings)
             {
+                DataRow newRow = _schemas.NewRow();
+                newRow["SCHEMA_NAME"] = connectionStringSetting.Name;
+                _schemas.Rows.Add(newRow);
                 _connectionStrings.Add(connectionStringSetting.Name, connectionStringSetting.ConnectionString);
             }
         }
 
-        /// <summary>
-        /// Gets the json result for the ezado.PROCEDURES call
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>   Gets the json result for the ezado.PROCEDURES call. </summary>
+        /// <returns>   The JSON procedures. </returns>
         private static string getJsonProcedures()
         {
             StringBuilder bldr = new StringBuilder();
-
+            
             using (SqlConnection cnn = new SqlConnection(_connectionStrings["ezado"]))
             {
                 cnn.Open();
@@ -234,6 +232,7 @@ namespace EzAdo
                 {
                     cmd.CommandText = "ezado.PROCEDURES";
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SCHEMAS", _schemas);
                     cmd.Connection = cnn;
 
                     SqlDataReader rdr = cmd.ExecuteReader();
@@ -246,9 +245,7 @@ namespace EzAdo
             return bldr.ToString();
         }
 
-        /// <summary>
-        /// Loads the DataTables from the [ezado].[USER_DEFEFINED_TABLES] call
-        /// </summary>
+        /// <summary>   Loads the DataTables from the [ezado].[USER_DEFEFINED_TABLES] call. </summary>
         private static void loadDataTables()
         {
             _dataTables = new Dictionary<string, DataTable>();
@@ -259,6 +256,7 @@ namespace EzAdo
                 {
                     cmd.CommandText = "[ezado].[USER_DEFEFINED_TABLES]";
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SCHEMAS", _schemas);
                     cmd.Connection = cnn;
                     cnn.Open();
                     SqlDataReader rdr = cmd.ExecuteReader();
@@ -281,10 +279,11 @@ namespace EzAdo
                         }
                         columnName = rdr.GetString(2);
                         dataType = rdr.GetString(3);
+                        Type type = SqlDataTypeMappings.SqlDataTypeToCSharpType(dataType);
                         allowDBNull = rdr.GetBoolean(4);
                         characterMaxLength = rdr.GetInt16(5);
 
-                        DataColumn column = new DataColumn(rdr.GetString(2), rdr.GetString(3).ToCSharpTypeFromSqlDataType());
+                        DataColumn column = new DataColumn(columnName, type);
                         column.AllowDBNull = rdr.GetBoolean(4);
                         if (dataType.Contains("char"))
                         {
@@ -296,13 +295,13 @@ namespace EzAdo
             }
         }
 
-        /// <summary>
-        /// Populates the _procedures dictionary
-        /// </summary>
-        /// <param name="tempProcedures"></param>
+        /// <summary>   Populates the _procedures dictionary. </summary>
+        /// <param name="dtoProcs"> List of dto.Procedure </param>
         private static void loadProcedures(List<dto.Procedure> dtoProcs)
         {
-            //Need to do make adjustments to procedures prior to converting
+            //Logic here is
+            //  1. Procedures annotated with always encrypted get appended with Column Encryption Setting=enabled";
+            //  2. Procedures always return a value, this value is not present in the schema views so it is manually added
 
             foreach (dto.Procedure dtoProc in dtoProcs)
             {
@@ -332,8 +331,6 @@ namespace EzAdo
                 _procedures.Add(procedureName, proc);
             }
         }
-
-
         #endregion
     }
 }

@@ -5,12 +5,13 @@ using System.Data;
 namespace EzAdo.Converters
 {
     /// <summary>
-    /// Class for mapping values retrieved from SQL Server information views to c# dta types
+    /// Class for mapping values retrieved from SQL Server information views to c# data types.
     /// </summary>
     public static class SqlDataTypeMappings
     {
-        #region SqlDataTypeToSqlDbTypes string, SqlDbType
 
+        #region Mapping of SqlServer data type names to SqlDbType enum
+        /// <summary>   Mapping of SqlServer data type names to SqlDbType enum. </summary>
         public static readonly Dictionary<string, SqlDbType> SqlDataTypeToSqlDbTypes = new Dictionary<string, SqlDbType>
         {
             { "bigint", SqlDbType.BigInt },
@@ -51,8 +52,8 @@ namespace EzAdo.Converters
 
         #endregion
 
-        #region SqlDataTypeToCSharpTypes string, Type
-
+        #region Mapping of SqlServer data type names to CSharps types.
+        /// <summary>   Mapping of SqlServer data type names to CSharps types. </summary>
         public static readonly Dictionary<string, Type> SqlDataTypeToCSharpTypes = new Dictionary<string, Type>
         {
             { "bigint", typeof(long) },
@@ -93,8 +94,8 @@ namespace EzAdo.Converters
 
         #endregion
 
-        #region SqlDbTypeToCSharpTypes SqlDbType, Type
-
+        #region Mapping of SqlDbType enum to CSharp types.
+        /// <summary>   Mapping of SqlDbType enum to CSharp types. </summary>
         private static readonly Dictionary<SqlDbType, Type> SqlDbTypeToCSharpTypes = new Dictionary<SqlDbType, Type>
         {
             { SqlDbType.BigInt, typeof(long) },
@@ -132,8 +133,8 @@ namespace EzAdo.Converters
 
         #endregion
 
-        #region SqlParameterModeToSqlParameterDirections
-
+        #region Mapping of SqlServer parameter mode to SqlCommand Parameter Direction enum.
+        /// <summary>   Mapping of SqlServer parameter mode to SqlCommand Parameter Direction enum. </summary>
         public static readonly Dictionary<string, ParameterDirection> SqlParameterModeToSqlParameterDirections = new Dictionary<string, ParameterDirection>
         {
             { "in", ParameterDirection.Input },
@@ -145,31 +146,25 @@ namespace EzAdo.Converters
 
         #region Conversion Methods
 
-        /// <summary>
-        /// Converts SqlDataType string to SqlDbType enum
-        /// </summary>
-        /// <param name="dataType">String data type id bigint, int ...</param>
-        /// <returns>System.Data.SqlDbType</returns>
+        /// <summary>   Converts SqlDataType string to SqlDbType enum. </summary>
+        /// <param name="dataType"> String data type bigint, int ... </param>
+        /// <returns>   System.Data.SqlDbType </returns>
         public static SqlDbType SqlDataTypeToSqlDbType(string dataType)
         {
             return SqlDataTypeToSqlDbTypes[dataType.ToLower()];
         }
 
-        /// <summary>
-        /// Converts SqlDataType string to C# Type
-        /// </summary>
-        /// <param name="dataType">String data type id bigint, int ...</param>
-        /// <returns>System.Type</returns>
+        /// <summary>   Converts SqlDataType string to C# Type. </summary>
+        /// <param name="dataType"> String data type ie bigint, int ... </param>
+        /// <returns>   System.Type. </returns>
         public static Type SqlDataTypeToCSharpType(string dataType)
         {
             return SqlDataTypeToCSharpTypes[dataType.ToLower()];
         }
 
-        /// <summary>
-        /// Converts SqlParameterMode to ParameterDirection enum
-        /// </summary>
-        /// <param name="mode">Parameter mode  string id in, out, inout</param>
-        /// <returns>System.Data.ParameterDirection</returns>
+        /// <summary>   Converts SqlParameterMode to ParameterDirection enum. </summary>
+        /// <param name="mode"> Parameter mode  string ie in, out, inout. </param>
+        /// <returns>   System.Data.ParameterDirection. </returns>
         public static ParameterDirection SqlParameterModeToParameterDirection(string mode)
         {
             return SqlParameterModeToSqlParameterDirections[mode.ToLower()];

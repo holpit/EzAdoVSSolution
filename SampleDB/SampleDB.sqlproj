@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\PERSON.sql" />
-    <Build Include="dbo\Tables\PERSON_ORDER.sql" />
+    <Build Include="dbo\Tables\ORDER.sql" />
     <Build Include="Security\open.sql" />
     <Build Include="Security\open_1.sql" />
     <Build Include="Security\open_2.sql" />
@@ -82,7 +82,7 @@
     <Build Include="Security\ezado_2.sql" />
     <Build Include="ezado\PROCEDURES.sql" />
     <Build Include="trusted\Stored Procedures\GET_PERSON.sql" />
-    <Build Include="dbo\Tables\REST_SQL_VALIDATORS.sql" />
+    <Build Include="dbo\Tables\EZ_ADO_VALIDATORS.sql" />
     <Build Include="open\Stored Procedures\POST_PERSON.sql" />
     <Build Include="open\Stored Procedures\PUT_PERSON.sql" />
     <Build Include="open\Stored Procedures\GET_PERSON.sql" />
@@ -93,6 +93,8 @@
     <Build Include="trusted\User Defined Types\POST_ORDER_ITEM_UDTT.sql" />
     <Build Include="ezado\USER_DEFEFINED_TABLES.sql" />
     <Build Include="trusted\Stored Procedures\POST_ORDER.sql" />
+    <Build Include="open\Stored Procedures\GET_ORDER.sql" />
+    <Build Include="ezado\SCHEMA_NAME_TABLE.sql" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -20,6 +20,8 @@ namespace SampleREST.Controllers
         [Route("api/open/Admin/Rebuild")]
         public HttpResponseMessage Rebuild()
         {
+            var request = this;
+
             ProcedureFactory.Rebuild();
             Procedure proc = ProcedureFactory.GetRestProcedure("PUT", _specificSchema, "PERSON");
             string json = JsonConvert.SerializeObject(proc);
