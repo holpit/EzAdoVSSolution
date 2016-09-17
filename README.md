@@ -82,20 +82,30 @@ Annotations include:
   * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable 
 
 ###EZ_ADO_VALIDATORS
-#### The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies identified by schema, procedure name, and paramter name.  The following additional validation is possible:
-
+#### The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies to a single parameter identified by schema, procedure name, and paramter name.  The following additional validation is possible:
 * Regular expressions - Add to the REST_SQL_VALIDATORS table
 * Numeric Minimum - Add to the REST_SQL_VALIDATORS table
 * Numeric Maximum - Add to the REST_SQL_VALIDATORS table
 
+#Getting started
+###Prerequisites
+*Recommend SQL 2016 Devleloper edition
+*Visual Studio 2015 Community Edition or Better
+*SQL Server Data Tools for Visual Studio
+*About a half out of your time
 
 
-##Prerequisits
-Recommend SQL 2016 Devleloper edition - although the local db will suffice
-If using developer edition create the target db SampleDB
+1. Download the zip
+2. Extract and open the solution in Visual Studio
+3. If using Sql Developer Create a Database called SampleDB.
+4. In the properties of the SampleDb project set the Debug Target Connection String to your DB.
+5. Set the SampleDB Project as startup and run the project.
+6. Verify that the logins, schemas, tables, and procedures have been creted.
+7. Set the connection strings in the app.config of the test project
+8. Set the connections string in the web.config of SampleRest project.
+9. Run the tests and explore the code
+10. Fire up postman and hit the endpoints
 
-* Set the properties for the SampleDB project
-* Run the DB Project
-* Run the tests
-* View the controllers
+
+
 
