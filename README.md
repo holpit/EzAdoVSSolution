@@ -76,6 +76,13 @@ Annotations include:
   * \*Always Encrypted\* the procedure contains always encrypted columns
   * \*Non Query\* - procedure returns no results
 
+###Pocedure Naming Conventions
+####Procedures that are created for the purpose of providing data from web api should be prefixed with the Http Method Type.  In addition those procedures should return the Http Status and can optionally log errors and return custom messages.  The RestSample project illustrates some of the conepts.
+  * POST - schema.POST_ENTITY - sample expects json post
+  * PUT - schema.PUT_ENTITY - sample expects json post
+  * DELETE - schema.DELETE_ENTITY - sample expects json post
+  * GET - schema.GET_ENTITY - sample expects query string parameters
+
 ###Other procedure syntax
 ####In addition to annotations procedures should adhere to the following convention:
   * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
