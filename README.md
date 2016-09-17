@@ -58,7 +58,7 @@ private string WithEz()
 ##Things to know to shorten the learning curve.
 
 ###Schemas
-####Schemas are a very important part of the design and the samples include the following.
+####Schemas are a very important part of the design and the samples include the following:
 1. ezAdo.
   * contains the procedure that queries system objects to return parameter definitions.
   * contains the procedure that queries the user defined tables. 
@@ -80,6 +80,15 @@ Annotations include:
 ####In addition to annotations procedures should adhere to the following convention:
   * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
   * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable 
+
+###EZ_ADO_VALIDATORS
+#### The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies identified by schema, procedure name, and paramter name.  The following additional validation is possible:
+
+* Regular expressions - Add to the REST_SQL_VALIDATORS table
+* Numeric Minimum - Add to the REST_SQL_VALIDATORS table
+* Numeric Maximum - Add to the REST_SQL_VALIDATORS table
+
+
 
 ##Prerequisits
 Recommend SQL 2016 Devleloper edition - although the local db will suffice
