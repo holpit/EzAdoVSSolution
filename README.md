@@ -59,3 +59,5 @@ private string WithEz()
 }
 ```
 ####For additional examples see the test project
+
+#How It Works
