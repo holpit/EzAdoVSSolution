@@ -47,9 +47,7 @@ private string WithoutEz()
         }
     }
     return bldr.ToString();
-}```
-
-```C#
+}
 private string WithEz()
 {
     Procedure proc = ProcedureFactory.GetProcedure("open", "GET_ORDER");
