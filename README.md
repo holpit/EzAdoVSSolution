@@ -56,16 +56,17 @@ private string WithEz()
 4. Naming conventions must be followed.
 
 
+
 ##Things to know to shorten the learning curve.
 The SampleDB database contains three schema's in addition to the defaults.  Each of these schema's map to a login, and ultimately a connection string in app.config or web.config.
-####ezAdo
-contains the procedure that queries system objects to return parameter definitions
-contains the procedure that queries the user defined tables
-contains the user defined type for schema names
-####open
-contains stored procedures and types that execute via the open login
-####trusted
-contains stored procedures and types that execute via the trusted login
+1. ezAdo
+  * contains the procedure that queries system objects to return parameter definitions
+  * contains the procedure that queries the user defined tables
+  * contains the user defined type for schema names
+2. open
+  * contains stored procedures and types that execute via the open login
+3. trusted
+  * contains stored procedures and types that execute via the trusted login
 
 
 
