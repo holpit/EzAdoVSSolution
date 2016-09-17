@@ -1,8 +1,8 @@
 #ezAdo Overview
 
-###By subscribing to a convention and utilizing the tools provided by the api, ezAdo allows a skilled team of developers to work in a way that plays to each members strengths.  Business objectives can be met faster, and without sacrificing performance, scalability, maintainability, or extensibility.
+####By subscribing to a convention and utilizing the tools provided by the api, ezAdo allows a skilled team of developers to work in a way that plays to each members strengths.  Business objectives can be met faster, and without sacrificing performance, scalability, maintainability, or extensibility.
 
-###The best way to illustrate is by example.  The following method calls a stored procedure named open.GET_ORDER.  The procedure returns JSON and has two out parameters.  For simplicity we are not processing the output parameters, just know they are there.
+####The best way to illustrate is by example.  The following method calls a stored procedure named open.GET_ORDER.  The procedure returns JSON and has two out parameters.  For simplicity we are not processing the output parameters, just know they are there.
 
 ```C#
 private string WithoutEz()
@@ -45,11 +45,11 @@ private string WithEz()
     return proc.ExecuteJson();
 }
 ```
-####For additional examples see the test project and SampleRest projects
+#####For additional examples see the test project and SampleRest projects
 
 #Ground rules
 
-###There are several points that you need to concede up front. If the following is contrary to the way you work, the promise is that if subscribe to the the following, you get rewarded by eliminating alot of redundant code that is typically error prone and a pain in the ass to maintain.
+####There are several points that you need to concede up front. If the following is contrary to the way you work, the promise is that if subscribe to the the following, you get rewarded by eliminating alot of redundant code that is typically error prone and a pain in the ass to maintain.
 1. Data access will now be done through the use of stored procedures.
 2. Store procedures should be created in schemas that delineate functionality or security.
 3. Each schema is mapped to a particular login, and subsequently a connections string identified by the schema.
@@ -68,7 +68,7 @@ private string WithEz()
 3. trusted.
   * contains stored procedures and types that execute via the trusted login. 
 
-###Procedure annotations
+####Procedure annotations
 Procedure annotations provide a way for the creator of a procedure to give clues to the ado calling procedure.  This provides developers immediate feedback when a call is made in a way that doesn't match the intended use.
 Annotations include:
   * \*Returns Json\* - the procedure return json via FOR JSON PATH
@@ -76,7 +76,7 @@ Annotations include:
   * \*Always Encrypted\* the procedure contains always encrypted columns
   * \*Non Query\* - procedure returns no results
 
-###Other procedure syntax
+####Other procedure syntax
 In addition to annotations procedures should adhere to the following convention:
   * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
   * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable 
