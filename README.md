@@ -1,38 +1,62 @@
-# EzAdo
+# ezAdo Overview
 
-## What is it?
-EzAdo Objects + Naming Convention + Procedure \*annotations\* + Validators = a very simplified but robust and secure way of interfacing with Sql Server. It is an attempt to remove as much of the mundane code of setting parameters, executing procedures, processing results, and ulimately returning results to client applications.
+##By subscribing to a convention and utilizing the tools provided by the api, ezAdo allows a skilled team of developers to work in a way that plays to each members strengths.  Business objectives can be met faster, and without sacrificing performance, scalability, maintainability, or extensibility.
 
-##Who is it for?
-If your organization relies heavily on stored procedures this is for you.  If your developing a lot of rest services that primarly interface with Sql Server this is for you. If you are completely satisfied with a tool like EntityFramework you may want to bail, as this is favors developers who lean towards SQL.  In fact if you are a DBA type person, you are gonna love this.
+##The best way to illustrate is by example.  The following method calls a stored procedure named open.GET_ORDER.  The procedure returns JSON and has two out parameters.  For simplicity we are not processing the output parameters, just know they are there.
 
-###Part 1 The Procedure.Factory
-The procedure factory initializes by executing the stored procedures restsql.PROCEDURES and restsql.USER_DEFINED_TABLES.  The results of those procedures are utilized to pre-build the procedures and user defined table types that are exposed through the factory. When a call is made to retrieve a procedure, the factory locates the procedure form its internal cache, clones it and initializes it by preparing the Sqlcommand, its parameters, and wiring up the connection.  Calling the Factory Get Procedure returns a procedure in a ready to execute state.
-In addtion to the procedures and types that are cached, when objects are populate from result sets, or procedure parameters are populated from objects, those mappings are cached in the factory and utlized in subsequent calls, thereby minimimizing the impact of reflection based setters and getters.  The first call to map an object pays a small penalty.
+```C#
+private string WithoutEz()
+{
+    int sqlErrorId = 0;
+    string messageResult = null;
+    StringBuilder bldr = new StringBuilder();
 
-###Part 2 Set the values for the Procedure
-Once the procedure is returned from the factory, it is ready to have the parameter values set.  There are several methods available including directly setting parameters, loading the parameters from a query string, loading the parameters from json, or loading parameters from an object.
+    using (SqlConnection cnn = new SqlConnection("your connection string"))
+    {
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            cmd.Connection = cnn;
+            cmd.CommandText = "[open].[GET_ORDER]";
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-###Part 3 Execute the Procedure
-Afer the values of the procedure are set the procedure is ready to execute.  Prior to execution the procedure  will iterate the parameters, validating against nulls, character length, numeric minimum and maximum values, and regular expressions. There are several methods including execute json, execute object, execute non query, execute response, where the execution type must align with the annotations of the stored procedure.
+            //defining these parameters is alway prone to errors 
+            cmd.Parameters.Add("@ORDER_ID", SqlDbType.Int, 8).Value = 1;
+            cmd.Parameters.Add("@SQL_ERROR_ID", SqlDbType.Int);
+            cmd.Parameters.Add("@MESSAGE_RESULT", SqlDbType.VarChar, 256);
+            cmd.Parameters["@SQL_ERROR_ID"].Direction = ParameterDirection.Output;
+            cmd.Parameters["@MESSAGE_RESULT"].Direction = ParameterDirection.Output;
+            cnn.Open();
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while(rdr.Read())
+                {
+                    //larger json results will return as a single column reader
+                    bldr.Append(rdr.GetString(0));
+                }
+                rdr.Close();
+            }
+            if(cmd.Parameters["@SQL_ERROR_ID"].Value != DBNull.Value)
+            {
+                sqlErrorId = (int)cmd.Parameters["@SQL_ERROR_ID"].Value;
+            }
+            if (cmd.Parameters["@MESSAGE_RESULT"].Value != DBNull.Value)
+            {
+                messageResult = (string)cmd.Parameters["@MESSAGE_RESULT"].Value;
+            }
+            cnn.Close();
+        }
+    }
+    return bldr.ToString();
+}```
 
-###Procedure annotations
-* \*Returns Json\* - procedure returns json (SQL 2016) - forces ExecuteJson()
-* \*Single Result\* - procedure returns a single row forces Execete\<T\> where T is not enumerable
-* \*Always Encrypted\* will append the connction string and enable always on encrypeted columns  
-* \*Non Query\* - procedure returns no results - (it can however have ouput parameters)
-* Non-Nullable - created when a procedure inspects an input parameter for null via IF @PARAMETER IS NULL THROW
-* Regular expressions - Add to the REST_SQL_VALIDATORS table
-* Numeric Minimum - Add to the REST_SQL_VALIDATORS table
-* Numeric Maximum - Add to the REST_SQL_VALIDATORS table
+```C#
+private string WithEz()
+{
+    Procedure proc = ProcedureFactory.GetProcedure("open", "GET_ORDER");
+    proc["orderId"] = 1;
+    string json = proc.ExecuteJson();
+    var sqlErrorId = proc.GetValue<int>("sqlErrorId");
+    var messageResult = proc.GetValue<string>("messageResult");
+    return json;
+}```
 
-##Getting Started
-Recommend SQL 2016 Devleloper edition - although the local db will suffice
-If using developer edition create the target db SampleDB
-
-* Set the properties for the SampleDB project
-* Run the DB Project
-* Run the tests
-* View the controllers
-
-To be continued...
