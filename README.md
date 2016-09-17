@@ -94,7 +94,7 @@ Annotations include:
  * SQL Server Data Tools for Visual Studio
  * About a half out of your time
 
-
+#Steps
 1. Download the zip
 2. Extract and open the solution in Visual Studio
 3. If using Sql Developer Create a Database called SampleDB.
