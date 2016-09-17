@@ -4,7 +4,7 @@
 
 ###The best way to illustrate is by example.  The following method calls a stored procedure named open.GET_ORDER.  The procedure returns JSON and has two out parameters.  For simplicity we are not processing the output parameters, just know they are there.
 
-```
+```C#
 private string WithoutEz()
 {
     int sqlErrorId = 0;
