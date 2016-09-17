@@ -56,10 +56,9 @@ private string WithEz()
 4. Naming conventions must be followed.
 
 ##Things to know to shorten the learning curve.
-The SampleDB database contains three schema's in addition to the defaults.  Each of these schema's map to a login, and ultimately a connection string in app.config or web.config.
 
 ###Schemas
-Schemas are a very important part of the design and the samples include the following.
+####Schemas are a very important part of the design and the samples include the following.
 1. ezAdo.
   * contains the procedure that queries system objects to return parameter definitions.
   * contains the procedure that queries the user defined tables. 
