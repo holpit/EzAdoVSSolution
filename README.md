@@ -68,16 +68,16 @@ private string WithEz()
 3. trusted.
   * contains stored procedures and types that execute via the trusted login. 
 
-####Procedure annotations
-Procedure annotations provide a way for the creator of a procedure to give clues to the ado calling procedure.  This provides developers immediate feedback when a call is made in a way that doesn't match the intended use.
+###Procedure annotations
+####Procedure annotations provide a way for the creator of a procedure to give clues to the ado calling procedure.  This provides developers immediate feedback when a call is made in a way that doesn't match the intended use.
 Annotations include:
   * \*Returns Json\* - the procedure return json via FOR JSON PATH
   * \*Single Result\* - the result of the call is a single entity - not enumerable
   * \*Always Encrypted\* the procedure contains always encrypted columns
   * \*Non Query\* - procedure returns no results
 
-####Other procedure syntax
-In addition to annotations procedures should adhere to the following convention:
+###Other procedure syntax
+####In addition to annotations procedures should adhere to the following convention:
   * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
   * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable 
 
