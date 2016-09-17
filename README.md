@@ -55,19 +55,30 @@ private string WithEz()
 3. Each schema is mapped to a particular login, and subsequently a connections string identified by the schema.
 4. Naming conventions must be followed.
 
-
-
 ##Things to know to shorten the learning curve.
 The SampleDB database contains three schema's in addition to the defaults.  Each of these schema's map to a login, and ultimately a connection string in app.config or web.config.
-1. ezAdo
-  * contains the procedure that queries system objects to return parameter definitions
-  * contains the procedure that queries the user defined tables
-  * contains the user defined type for schema names
-2. open
-  * contains stored procedures and types that execute via the open login
-3. trusted
-  * contains stored procedures and types that execute via the trusted login
 
+###Schemas
+Schemas are a very important part of the design and the samples include the following.
+1. ezAdo.
+  * contains the procedure that queries system objects to return parameter definitions.
+  * contains the procedure that queries the user defined tables. 
+  * contains the user defined type for schema names. 
+2. open.
+  * contains stored procedures and types that execute via the open login. 
+3. trusted.
+  * contains stored procedures and types that execute via the trusted login. 
+
+###Procedure annotations
+Procedure annotations provide a way for the creator of a procedure to give clues to the ado calling procedure.  This provides developers immediate feedback when a call is made in a way that doesn't match the intended use.
+Annotations include:
+  * \*Returns Json\* - the procedure return json via FOR JSON PATH
+  * \*Single Result\* - the result of the call is a single entity - not enumerable
+  * \*Always Encrypted\* the procedure contains always encrypted columns
+  * \*Non Query\* - procedure returns no results
+  * In addition to annotations procedures should adhere to the following convention
+  * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
+  * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable
 
 
 
