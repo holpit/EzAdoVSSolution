@@ -89,10 +89,10 @@ Annotations include:
 
 #Getting started
 ###Prerequisites
-*Recommend SQL 2016 Devleloper edition
-*Visual Studio 2015 Community Edition or Better
-*SQL Server Data Tools for Visual Studio
-*About a half out of your time
+ * Recommend SQL 2016 Devleloper edition
+ * Visual Studio 2015 Community Edition or Better
+ * SQL Server Data Tools for Visual Studio
+ * About a half out of your time
 
 
 1. Download the zip
