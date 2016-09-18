@@ -117,5 +117,9 @@ Annotations include:
 10. Fire up postman and hit the endpoints
 
 
-
-
+####Next steps for us
+ * We appreciate any feedback you may have
+ * Create a NuGet package for fast integration
+ * Possible port to .net core
+ * Possible port to other Db’s 
+ * Maybe build up a complete rest > sql stack with OAuth security using the rest functionality
