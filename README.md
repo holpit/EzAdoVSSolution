@@ -72,7 +72,7 @@ There are several points you need to concede up front. If the following is contr
   * contains stored procedures and types that execute via the trusted login. 
 
 ###Procedure annotations
-####Procedure annotations provide a way for the creator of a procedure to give clues to the ado calling procedure.  This provides developers immediate feedback when a call is made in a way that doesn't match the intended use.
+Procedure annotations provide a way for the creator of a procedure to give clues to the ado calling procedure.  This provides developers immediate feedback when a call is made in a way that doesn't match the intended use.
 Annotations include:
   * \*Returns Json\* - the procedure return json via FOR JSON PATH
   * \*Single Result\* - the result of the call is a single entity - not enumerable
@@ -80,31 +80,31 @@ Annotations include:
   * \*Non Query\* - procedure returns no results
 
 ###Pocedure Naming Conventions
-#####Procedures that are created for the purpose of providing data from web api should be prefixed with the Http Method Type.  In addition those procedures should return the Http Status and can optionally log errors and return custom messages.  The RestSample project illustrates some of the conepts.
+ Procedures that are created for the purpose of providing data from web api should be prefixed with the Http Method Type.  In addition those procedures should return the Http Status and can optionally log errors and return custom messages.  The RestSample project illustrates some of the conepts.
   * POST - schema.POST_ENTITY - sample expects json post
   * PUT - schema.PUT_ENTITY - sample expects json post
   * DELETE - schema.DELETE_ENTITY - sample expects json post
   * GET - schema.GET_ENTITY - sample expects query string parameters
 
 ###Other procedure syntax
-#####In addition to annotations procedures should adhere to the following convention:
+ In addition to annotations procedures should adhere to the following convention:
   * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
   * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable 
 
 ###EZ_ADO_VALIDATORS
-##### The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies to a single parameter identified by schema, procedure name, and paramter name.  The following additional validation is possible:
+ The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies to a single parameter identified by schema, procedure name, and paramter name.  The following additional validation is possible:
 * Regular expressions - Add to the REST_SQL_VALIDATORS table
 * Numeric Minimum - Add to the REST_SQL_VALIDATORS table
 * Numeric Maximum - Add to the REST_SQL_VALIDATORS table
 
 #Getting started
-#####Prerequisites
+####Prerequisites
  * Recommend SQL 2016 Devleloper edition
  * Visual Studio 2015 Community Edition or Better
  * SQL Server Data Tools for Visual Studio
  * About a half out of your time
 
-##Steps
+####Steps
 1. Download the zip
 2. Extract and open the solution in Visual Studio
 3. If using Sql Developer Create a Database called SampleDB.
