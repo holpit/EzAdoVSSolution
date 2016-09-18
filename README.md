@@ -49,7 +49,7 @@ private string WithEz()
 
 
 #Ground rules
-There are several points you need to concede up front. If the following is contrary to the way you work, the promise is that if you subscribe to the the following, you are rewarded with the elimination of alot of redundant code, that is typically error prone and a pain in the ass to maintain.
+#####There are several points you need to concede up front. If the following is contrary to the way you work, the promise is that if you subscribe to the the following, you are rewarded with the elimination of alot of redundant code, that is typically error prone and a pain in the ass to maintain.
 1. Data access will now be done through the use of stored procedures.
 2. Store procedures should be created in schemas that delineate functionality or security.
 3. Each schema is mapped to a particular login, and subsequently a connections string identified by the schema.
@@ -58,7 +58,7 @@ There are several points you need to concede up front. If the following is contr
 #Things to know to shorten the learning curve.
 
 ###Schemas
-####Schemas are a very important part of the design and the samples include the following:
+#####Schemas are a very important part of the design and the samples include the following:
 1. ezAdo.
   * contains the procedure that queries system objects to return parameter definitions.
   * contains the procedure that queries the user defined tables. 
@@ -77,31 +77,31 @@ Annotations include:
   * \*Non Query\* - procedure returns no results
 
 ###Pocedure Naming Conventions
-####Procedures that are created for the purpose of providing data from web api should be prefixed with the Http Method Type.  In addition those procedures should return the Http Status and can optionally log errors and return custom messages.  The RestSample project illustrates some of the conepts.
+#####Procedures that are created for the purpose of providing data from web api should be prefixed with the Http Method Type.  In addition those procedures should return the Http Status and can optionally log errors and return custom messages.  The RestSample project illustrates some of the conepts.
   * POST - schema.POST_ENTITY - sample expects json post
   * PUT - schema.PUT_ENTITY - sample expects json post
   * DELETE - schema.DELETE_ENTITY - sample expects json post
   * GET - schema.GET_ENTITY - sample expects query string parameters
 
 ###Other procedure syntax
-####In addition to annotations procedures should adhere to the following convention:
+#####In addition to annotations procedures should adhere to the following convention:
   * IF @PARAMETER IS NULL THROW... Parameter is now non-nullable
   * IF NOT EXISTS (SELECT 1 FROM @PARAMETER_TABLE) THROW... Parameter is now non-nullable 
 
 ###EZ_ADO_VALIDATORS
-#### The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies to a single parameter identified by schema, procedure name, and paramter name.  The following additional validation is possible:
+##### The table EZ_ADO_VALIDATORS provides the opportunity to expand the validation in the api with numeric range, and regular expressions and applies to a single parameter identified by schema, procedure name, and paramter name.  The following additional validation is possible:
 * Regular expressions - Add to the REST_SQL_VALIDATORS table
 * Numeric Minimum - Add to the REST_SQL_VALIDATORS table
 * Numeric Maximum - Add to the REST_SQL_VALIDATORS table
 
 #Getting started
-###Prerequisites
+#####Prerequisites
  * Recommend SQL 2016 Devleloper edition
  * Visual Studio 2015 Community Edition or Better
  * SQL Server Data Tools for Visual Studio
  * About a half out of your time
 
-#Steps
+##Steps
 1. Download the zip
 2. Extract and open the solution in Visual Studio
 3. If using Sql Developer Create a Database called SampleDB.
