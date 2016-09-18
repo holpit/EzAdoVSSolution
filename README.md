@@ -59,6 +59,7 @@ private string WithEz()
 
 ###Schemas
  Schemas are a very important part of the design and the samples include the following:
+ 
 1. ezAdo.
   * contains the procedure that queries system objects to return parameter definitions.
   * contains the procedure that queries the user defined tables. 
