@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DynamicHelp xmlns="http://msdn.microsoft.com/vsdata/xsd/vsdh.xsd" xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xsi:schemaLocation="http://msdn.microsoft.com/vsdata/xsd/vsdh.xsd">	
+   <LINKGROUP ID="EzAdo" Title="EzAdo Reference Help" Priority="2100">
+      <GLYPH Expanded="vs:/ctxhelp_show.gif" Collapsed="vs:/ctxhelp_hide.gif"/>
+   </LINKGROUP>
+
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.Clone" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000009.html" LinkGroup="EzAdo">Clone Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ContainsParameter" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000018.html" LinkGroup="EzAdo">ContainsParameter Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteJson" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000000A.html" LinkGroup="EzAdo">ExecuteJson Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteJson<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000000B.html" LinkGroup="EzAdo">ExecuteJson<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteJsonList<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000000C.html" LinkGroup="EzAdo">ExecuteJsonList<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteNonQuery" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000012.html" LinkGroup="EzAdo">ExecuteNonQuery Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteReader<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000000E.html" LinkGroup="EzAdo">ExecuteReader<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteReaderAsJson<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000010.html" LinkGroup="EzAdo">ExecuteReaderAsJson<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteReaderDataTable" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000000D.html" LinkGroup="EzAdo">ExecuteReaderDataTable Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteReaderList<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000000F.html" LinkGroup="EzAdo">ExecuteReaderList<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ExecuteReaderListAsJson<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000011.html" LinkGroup="EzAdo">ExecuteReaderListAsJson<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000019.html" LinkGroup="EzAdo">EzAdo Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo Reference" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000021.html" LinkGroup="EzAdo">EzAdo Reference</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000000.html" LinkGroup="EzAdo">EzAdo.Models Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory.GetDataTable" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000001F.html" LinkGroup="EzAdo">GetDataTable Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.GetParameter" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000017.html" LinkGroup="EzAdo">GetParameter Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory.GetParameterMapping<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000001E.html" LinkGroup="EzAdo">GetParameterMapping<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory.GetProcedure" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000001B.html" LinkGroup="EzAdo">GetProcedure Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory.GetReaderColumnToObjectPropertyMappings<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000001D.html" LinkGroup="EzAdo">GetReaderColumnToObjectPropertyMappings<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory.GetRestProcedure" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000001C.html" LinkGroup="EzAdo">GetRestProcedure Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.GetValue<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000015.html" LinkGroup="EzAdo">GetValue<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.IExplicitMap" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000001.html" LinkGroup="EzAdo">IExplicitMap Interface</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.Item" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000013.html" LinkGroup="EzAdo">Item Property</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.LoadFromJson" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000006.html" LinkGroup="EzAdo">LoadFromJson Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.LoadFromObject<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000007.html" LinkGroup="EzAdo">LoadFromObject<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.LoadFromQuery" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000005.html" LinkGroup="EzAdo">LoadFromQuery Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.IExplicitMap.Map" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000002.html" LinkGroup="EzAdo">Map Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000004.html" LinkGroup="EzAdo">Procedure Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.Procedure" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000008.html" LinkGroup="EzAdo">Procedure Constructor</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_000000000000001A.html" LinkGroup="EzAdo">ProcedureFactory Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.ProcedureFactory.Rebuild" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000020.html" LinkGroup="EzAdo">Rebuild Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.ReturnValue<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000014.html" LinkGroup="EzAdo">ReturnValue<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.Procedure.SetValue<T>" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000016.html" LinkGroup="EzAdo">SetValue<T> Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="EzAdo.Models.IExplicitMap.SupportsMap" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:EzAdo.chm::/topic_0000000000000003.html" LinkGroup="EzAdo">SupportsMap Method</LItem>
+      </Links>
+   </Context>
+   
+
+</DynamicHelp>
+

@@ -76,7 +76,7 @@ var Microsoft;
                 this.message = _InternalMessageId[msgId].toString();
                 this.messageId = msgId;
                 var diagnosticText = (msg ? " message:" + _InternalLogMessage.sanitizeDiagnosticText(msg) : "") +
-                    (properties ? " props:" + _InternalLogMessage.sanitizeDiagnosticText(JSON.stringify(properties)) : "");
+                    (properties ? " props:" + _InternalLogMessage.sanitizeDiagnosticText(Json.stringify(properties)) : "");
                 this.message += diagnosticText;
             }
             _InternalLogMessage.sanitizeDiagnosticText = function (text) {
@@ -431,7 +431,7 @@ var Microsoft;
             };
             Util.dump = function (object) {
                 var objectTypeDump = Object.prototype.toString.call(object);
-                var propertyValueDump = JSON.stringify(object);
+                var propertyValueDump = Json.stringify(object);
                 if (objectTypeDump === "[object Error]") {
                     propertyValueDump = "{ stack: '" + object.stack + "', message: '" + object.message + "', name: '" + object.name + "'";
                 }
@@ -866,7 +866,7 @@ var Microsoft;
             }
             Serializer.serialize = function (input) {
                 var output = Serializer._serializeObject(input, "root");
-                return JSON.stringify(output);
+                return Json.stringify(output);
             };
             Serializer._serializeObject = function (source, name) {
                 var circularReferenceCheck = "__aiCircularRefCheck";
@@ -895,7 +895,7 @@ var Microsoft;
                     else {
                         ApplicationInsights._InternalLogging.throwInternalUserActionable(ApplicationInsights.LoggingSeverity.WARNING, new ApplicationInsights._InternalLogMessage(ApplicationInsights._InternalMessageId.USRACT_CannotSerializeObjectNonSerializable, "Attempting to serialize an object which does not implement ISerializable", { name: name }));
                         try {
-                            JSON.stringify(source);
+                            Json.stringify(source);
                             output = source;
                         }
                         catch (e) {
@@ -1838,7 +1838,7 @@ var Microsoft;
                 try {
                     var bufferJson = ApplicationInsights.Util.getSessionStorage(key);
                     if (bufferJson) {
-                        var buffer = JSON.parse(bufferJson);
+                        var buffer = Json.parse(bufferJson);
                         if (buffer) {
                             return buffer;
                         }
@@ -1851,7 +1851,7 @@ var Microsoft;
             };
             SessionStorageSendBuffer.prototype.setBuffer = function (key, buffer) {
                 try {
-                    var bufferJson = JSON.stringify(buffer);
+                    var bufferJson = Json.stringify(buffer);
                     ApplicationInsights.Util.setSessionStorage(key, bufferJson);
                 }
                 catch (e) {
@@ -1981,7 +1981,7 @@ var Microsoft;
                 var xhr = new XMLHttpRequest();
                 xhr[ApplicationInsights.AjaxMonitor.DisabledPropertyName] = true;
                 xhr.open("POST", this._config.endpointUrl(), isAsync);
-                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.setRequestHeader("Content-type", "application/Json");
                 xhr.onreadystatechange = function () { return _this._xhrReadyStateChange(xhr, payload, payload.length); };
                 xhr.onerror = function (event) { return _this._onError(payload, xhr.responseText || xhr.response || "", event); };
                 var batch = this._buffer.batchPayloads(payload);
@@ -3174,7 +3174,7 @@ var Microsoft;
                                 throw new Error("Cannot call startPageVisit consecutively without first calling stopPageVisit");
                             }
                             var currPageVisitData = new PageVisitData(pageName, pageUrl);
-                            var currPageVisitDataStr = JSON.stringify(currPageVisitData);
+                            var currPageVisitDataStr = Json.stringify(currPageVisitData);
                             ApplicationInsights.Util.setSessionStorage(this.prevPageVisitDataKeyName, currPageVisitDataStr);
                         }
                     }
@@ -3188,7 +3188,7 @@ var Microsoft;
                             var pageVisitEndTime = Date.now();
                             var pageVisitDataJsonStr = ApplicationInsights.Util.getSessionStorage(this.prevPageVisitDataKeyName);
                             if (pageVisitDataJsonStr) {
-                                var prevPageVisitData = JSON.parse(pageVisitDataJsonStr);
+                                var prevPageVisitData = Json.parse(pageVisitDataJsonStr);
                                 prevPageVisitData.pageVisitTime = pageVisitEndTime - prevPageVisitData.pageVisitStartTime;
                                 ApplicationInsights.Util.removeSessionStorage(this.prevPageVisitDataKeyName);
                                 return prevPageVisitData;
@@ -3774,7 +3774,7 @@ var Microsoft;
     (function (ApplicationInsights) {
         "use strict";
         try {
-            if (typeof window !== "undefined" && typeof JSON !== "undefined") {
+            if (typeof window !== "undefined" && typeof Json !== "undefined") {
                 var aiName = "appInsights";
                 if (window[aiName] === undefined) {
                     Microsoft.ApplicationInsights.AppInsights.defaultConfig = Microsoft.ApplicationInsights.Initialization.getDefaultConfig();

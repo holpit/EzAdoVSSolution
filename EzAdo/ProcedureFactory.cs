@@ -13,39 +13,23 @@ using EzAdo.Converters;
 
 namespace EzAdo
 {
-    /// <summary>   Procedure factory queries db for stored procedure available for consumption, as well as table definitions.  That 
-    ///             data is used in the construction of the procedures available to the clients. </summary>
+    /// <summary>Procedure factory queries db for stored procedures, and UDT's available based on the connection strings provided.  It then builds out the objects that will eventually be cloned for use.</summary>
     public static class ProcedureFactory
     {
         #region |Private Collections|
 
-        /// <summary>   All the procedures that were loaded from ezado.PROCEDURES. </summary>
         private static Dictionary<string, Procedure> _procedures;
-
-        /// <summary>   The set of connection strings from app config. </summary>
         private static Dictionary<string, string> _connectionStrings;
-
-        // Cache of result column -> object property - used to  set object values from result sets. 
         private static Dictionary<string, ReaderColumnToObjectPropertyMapping[]> _readerColumnToObjectPropertyMappings;
-
-        /// <summary>   All the data tables that were loaded from ezado.USER_DEFINED_TABLES. </summary>
         private static Dictionary<string, DataTable> _dataTables;
-
-        /// <summary>
-        /// Cache of object.property -> parameter - used to set parameter values from object.
-        /// </summary>
         private static Dictionary<string, ObjectPropertyToParameterNameMapping[]> _objectPropertyToParameterNameMappings;
-
-
         private static DataTable _schemas;
 
         #endregion
 
         #region |Constructors|
 
-        /// <summary>
-        /// Calls init()
-        /// </summary>
+        /// <summary>Calls init()</summary>
         static ProcedureFactory()
         {
             init();
@@ -54,14 +38,9 @@ namespace EzAdo
         #endregion
 
         #region |Access Methods|
-        /// <summary>
-        /// Clones a cached Procedure where the procedure is identified by the combination of schema and
-        /// name.
-        /// </summary>
-        /// <exception cref="IndexOutOfRangeException"> No Procedure was found by the converted name. </exception>
-        /// <param name="specificSchema">   Left side of sql stored procedure [schema].[procedure]. </param>
-        /// <param name="specificName">   Right side of sql stored procedure [schema].[procedure]. </param>
-        /// <returns>   EzAdo.Procedure. </returns>
+        /// <summary>Clones a cached Procedure where the procedure is identified by the combination of schema and name.</summary>
+        /// <param name="specificSchema">Left side of Sql stored procedure [schema].[PROCEDURE_NAME].</param>
+        /// <param name="specificName">Right side of Sql stored procedure [schema].[PROCEDURE_NAME].</param>
         public static Procedure GetProcedure(string specificSchema, string specificName)
         {
             string procedureName = $"[{specificSchema}].[{specificName}]";
@@ -72,29 +51,19 @@ namespace EzAdo
             return _procedures[procedureName].Clone();
         }
 
-        /// <summary>
-        /// Clones a cached RestProcedure where the procedure is identified by the combination of method,
-        /// schema and name in the format METHOD_SCHEMA.NAME.
-        /// </summary>
-        /// <param name="method">           GET|PUT|POST|DELETE. </param>
-        /// <param name="specificSchema"> Left side of sql stored procedure [schema].[method_procedure]. </param>
-        /// <param name="specificName">   procedure part of sql stored procedure
-        /// [schema].[method_procedure]. </param>
-        /// <returns>   EzAdo.RestProcedure. </returns>
+        /// <summary>Clones a cached Procedure where the procedure is identified by the combination of method, schema and name in the format schema.METHOD_PROCEDURE_NAME.</summary>
+        /// <param name="method">GET|PUT|POST|DELETE.</param>
+        /// <param name="specificSchema">Left side of sql stored procedure [schema].[METHOD_PROCEDURE_NAME].</param>
+        /// <param name="specificName">procedure part of sql stored procedure [schema].[METHOD_PROCEDURE_NAME].</param>
         public static Procedure GetRestProcedure(string method, string specificSchema, string specificName)
         {
             return GetProcedure(specificSchema, $"{method}_{specificName.ToUnderscore()}");
         }
-        
 
-        /// <summary>
-        /// Gets the ReaderColumnToObjectPropertyMapping[] for the given reader and procedure.
-        /// </summary>
-        /// <typeparam name="T">    Type of object the reader is mapping to. </typeparam>
-        /// <param name="procedureName">    Left side of sql stored procedure [schema].[procedure]. </param>
-        /// <param name="rdr">           An SqlDataReader that was populate via the procedure call
-        /// represented by schmema and name. </param>
-        /// <returns>   The generated or cached array of column mappings. </returns>
+        /// <summary>Gets the ReaderColumnToObjectPropertyMapping[] for the given reader and procedure.</summary>
+        /// <typeparam name="T">Type of object the reader is mapping to.</typeparam>
+        /// <param name="procedureName">Left side of sql stored procedure [schema].[PROCEDURE_NAME].</param>
+        /// <param name="rdr">An SqlDataReader that was populate via the procedure call represented by schema and name.</param>
         public static ReaderColumnToObjectPropertyMapping[] GetReaderColumnToObjectPropertyMappings<T>(string procedureName, SqlDataReader rdr)
         {
             string mappingName = $"[{procedureName}].T{typeof(T).ToString()}";
@@ -123,12 +92,9 @@ namespace EzAdo
             return _readerColumnToObjectPropertyMappings[mappingName];
         }
 
-        /// <summary>
-        /// Gets the ObjectPropertyToParameterNameMapping[] for the given object type and procedure.
-        /// </summary>
-        /// <typeparam name="T">    Type of object the procedure parameters are mapping to. </typeparam>
-        /// <param name="procedureName">    Left side of sql stored procedure [schema].[procedure]. </param>
-        /// <returns>   The generated or cached array of ObjectPropertyToParameterNameMapping. </returns>
+        /// <summary>Gets the ObjectPropertyToParameterNameMapping[] for the given object type and procedure.</summary>
+        /// <typeparam name="T">Type of object the procedure parameters are mapping to.</typeparam>
+        /// <param name="procedureName">Left side of sql stored procedure [schema].[PROCEDURE_NAME].</param>
         public static ObjectPropertyToParameterNameMapping[] GetParameterMapping<T>(string procedureName)
         {
             string mappingName = $"{procedureName}].T{typeof(T).ToString()}";
@@ -154,12 +120,8 @@ namespace EzAdo
             return _objectPropertyToParameterNameMappings[mappingName];
         }
 
-        /// <summary>
-        /// Clones a cached DataTable where the data table is identified by the combination of schema and
-        /// name in the format SCHEMA.USER_DEFINED_TABLE_TYPE.
-        /// </summary>
+        /// <summary>Clones a cached DataTable where the data table is identified by the combination of schema and name in the format SCHEMA.USER_DEFINED_TABLE_TYPE.</summary>
         /// <param name="dataTableName"> Fully qualified UDT [schema].[USER_DEFINED_TABLE_TYPE]. </param>
-        /// <returns>   System.Data.DataTable. </returns>
         public static DataTable GetDataTable(string dataTableName)
         {
             DataTable source = _dataTables[dataTableName];
@@ -174,7 +136,7 @@ namespace EzAdo
             return target;
         }
 
-        /// <summary>   Clears all cached data and repopulates the collections. </summary>
+        /// <summary>Clears all cached data and repopulates the collections.</summary>
         public static void Rebuild()
         {
             init();
@@ -184,7 +146,7 @@ namespace EzAdo
 
         #region |Private Methods|
 
-        /// <summary>   Initializes the collections and builds out objects for cloning </summary>
+        //Initializes the collections and builds out objects for cloning
         private static void init()
         {
             _procedures = new Dictionary<string, Procedure>();
@@ -193,14 +155,14 @@ namespace EzAdo
 
             getConnectionStrings();
 
-            var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            List<dto.Procedure> dtoProcedures = JsonConvert.DeserializeObject<List<dto.Procedure>>(getJsonProcedures(), jsonSerializerSettings);
+            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            List<dto.Procedure> dtoProcedures = JsonConvert.DeserializeObject<List<dto.Procedure>>(getJsonProcedures(), JsonSerializerSettings);
             loadProcedures(dtoProcedures);
 
             loadDataTables();
         }
 
-        /// <summary>   Populates _connectionStrings and _schemas </summary>
+        //Populates _connectionStrings and _schemas 
         private static void getConnectionStrings()
         {
             _connectionStrings = new Dictionary<string, string>();
@@ -218,8 +180,7 @@ namespace EzAdo
             }
         }
 
-        /// <summary>   Gets the json result for the ezado.PROCEDURES call. </summary>
-        /// <returns>   The JSON procedures. </returns>
+        //Gets the Json result for the ezado.PROCEDURES call.
         private static string getJsonProcedures()
         {
             StringBuilder bldr = new StringBuilder();
@@ -245,7 +206,7 @@ namespace EzAdo
             return bldr.ToString();
         }
 
-        /// <summary>   Loads the DataTables from the [ezado].[USER_DEFEFINED_TABLES] call. </summary>
+        //Loads the DataTables from the [ezado].[USER_DEFEFINED_TABLES] call.
         private static void loadDataTables()
         {
             _dataTables = new Dictionary<string, DataTable>();
@@ -295,8 +256,7 @@ namespace EzAdo
             }
         }
 
-        /// <summary>   Populates the _procedures dictionary. </summary>
-        /// <param name="dtoProcs"> List of dto.Procedure </param>
+        //Populates the _procedures dictionary.
         private static void loadProcedures(List<dto.Procedure> dtoProcs)
         {
             //Logic here is
@@ -331,6 +291,7 @@ namespace EzAdo
                 _procedures.Add(procedureName, proc);
             }
         }
+
         #endregion
     }
 }

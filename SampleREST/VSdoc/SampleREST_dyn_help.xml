@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DynamicHelp xmlns="http://msdn.microsoft.com/vsdata/xsd/vsdh.xsd" xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance" xsi:schemaLocation="http://msdn.microsoft.com/vsdata/xsd/vsdh.xsd">	
+   <LINKGROUP ID="SampleREST" Title="SampleREST Reference Help" Priority="2100">
+      <GLYPH Expanded="vs:/ctxhelp_show.gif" Collapsed="vs:/ctxhelp_hide.gif"/>
+   </LINKGROUP>
+
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.WebApiApplication.Application_Start" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_000000000000000D.html" LinkGroup="SampleREST">Application_Start Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.OpenController.Delete" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000009.html" LinkGroup="SampleREST">Delete Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.OpenController.Get" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000006.html" LinkGroup="SampleREST">Get Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.OpenController" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000004.html" LinkGroup="SampleREST">OpenController Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.OpenController.Post" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000007.html" LinkGroup="SampleREST">Post Method {SampleREST.Controllers.OpenController}</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.TrustedController.Post" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_000000000000000B.html" LinkGroup="SampleREST">Post Method {SampleREST.Controllers.TrustedController}</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.OpenController.Put" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000008.html" LinkGroup="SampleREST">Put Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.OpenController.Rebuild" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000005.html" LinkGroup="SampleREST">Rebuild Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.WebApiConfig.Register" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000002.html" LinkGroup="SampleREST">Register Method</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000000.html" LinkGroup="SampleREST">SampleREST Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST Reference" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_000000000000000E.html" LinkGroup="SampleREST">SampleREST Reference</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000003.html" LinkGroup="SampleREST">SampleREST.Controllers Namespace</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.Controllers.TrustedController" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_000000000000000A.html" LinkGroup="SampleREST">TrustedController Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.WebApiApplication" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_000000000000000C.html" LinkGroup="SampleREST">WebApiApplication Class</LItem>
+      </Links>
+   </Context>
+   
+
+   <Context>
+      <Keywords>
+         <KItem Name="SampleREST.WebApiConfig" />
+      </Keywords>
+      <Links>
+         <LItem URL="ms-its:SampleREST.chm::/topic_0000000000000001.html" LinkGroup="SampleREST">WebApiConfig Class</LItem>
+      </Links>
+   </Context>
+   
+
+</DynamicHelp>
+

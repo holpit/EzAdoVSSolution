@@ -11,45 +11,38 @@ using System.IO;
 
 namespace EzAdo.Models
 {
-    /// <summary>   A Procedure in the context of EzAdo is a wrapper around a stored procedure including the in, out, and return parameters.
-    ///             All procedures are prebuilt using the ezado.Procedures stored procedure as the data source. </summary>
+    /// <summary>A Procedure in the context of EzAdo is definition and wrapper around an MSSQL stored procedure including the in, out, and return parameters.  The ProcedureFactory.init() call utilizes [ezado].[PROCEDURES] to retrieve the procedures that align with the schema's provided by the connection strings.</summary>
     public class Procedure
     {
-        #region private variables
+        #region |Private variables|
 
-        /// <summary>   The connection string. </summary>
+        /// <summary>   The connection string that this procedure requires.  Procedures annotated with *Always Encrypted* will append the connection with "Column Encryption Setting=enabled". </summary>
         private string _connectionString;
 
-        /// <summary>   Name of the procedure. </summary>
+        /// <summary>   Name of the procedure in the format [specificSchema].[SPECIFIC_NAME]. </summary>
         private string _procedureName;
 
-        /// <summary>   True if this object is JSON result, based on the procedure containing the *Returns Json* annotation </summary>
+        /// <summary>   Stored procedure annotation *Returns Json*. Informs the execution methods that the procedure returns Json.</summary>
         private bool _isJsonResult;
 
-        /// <summary>   True if this object is single result, based on the procedure containing the *Single Result* annotation </summary>
+        /// <summary>   Stored procedure annotation *Single Result*.  Informs the execution methods that the result is a single entity allowing Execute&lt;T&gt; vs. ExecuteList&lt;T&gt;.  </summary>
         private bool _isSingleResult;
 
-        /// <summary>   true if this object is non query, based on the procedure containing the *Non Query* annotation  </summary>
+        /// <summary>   Stored procedure annotation *Non Query*. Informs the execution methods that the procedure does not return a value. </summary>
         private bool _isNonQuery;
 
-        /// <summary>   The dynamic query entered by the user. </summary>
-        private string _dynamicQuery = null;
-
-        /// <summary>   Parameter Collection. </summary>
+        /// <summary>   Contains the definition of all the procedures associated parameters. </summary>
         private Dictionary<string, Parameter> _parameters;
 
-        /// <summary>   Parameter name is the dictionary that contains mappings for different naming conventions.  As an example the 
-        ///             parameter @FIRST_NAME would have mappings of @FIRST_NAME, FIRST_NAME, FirstName, and firstName.  The mapping allows
-        ///             for quick parameter lookups in the get and set methods </summary>
+        /// <summary>   A ParameterNameMap is a dictionary that maps a parameter name in the format @PARAMETER_NAME to any of the followin variations
+        ///             FIRST_NAME, FirstName, and firstName.  The mapping prevents case conversion on every set or get. </summary>
         private Dictionary<string, string> _parameterNameMap;
 
         #endregion
 
         #region |Loaders|
 
-        /// <summary>   Checks to see if the newton soft token provides a value. </summary>
-        /// <param name="tkn">  JsonToken. </param>
-        /// <returns>   True if the token type is a value type. </returns>
+        //Checks to see if the newton soft token provides a value.
         private bool isTokenValue(JsonToken tkn)
         {
             return tkn == JsonToken.Boolean ||
@@ -61,11 +54,8 @@ namespace EzAdo.Models
         }
 
 
-        /// <summary>
-        /// Sets the parameters from the query string Note that multiple values (s=1 s=2 s=3) are not
-        /// supported. For multiple records use LoadFromJson method.
-        /// </summary>
-        /// <param name="keyValuePairs">    From HttpRequest. </param>
+        /// <summary>Sets the parameter values from the query parameters. Note that multiple values (s=1 s=2 s=3) that evaluate to a list are not supported. For multiple records use the LoadFromJson method.</summary>
+        /// <param name="keyValuePairs">Query string parameters.</param>
         public void LoadFromQuery(IEnumerable<KeyValuePair<string, string>> keyValuePairs)
         {
             foreach (KeyValuePair<string, string> kp in keyValuePairs)
@@ -73,13 +63,13 @@ namespace EzAdo.Models
                 SetValue<object>(kp.Key, kp.Value);
             }
         }
-        
 
-        /// <summary>   Sets the parameters values from json. </summary>
-        /// <param name="json"> json string. </param>
-        public void LoadFromJson(string json)
+
+        /// <summary>Sets the parameters values from Json. Note that when the Json provides a list the parameter must have a user defined table type as the parameter.</summary>
+        /// <param name="Json">Json string.</param>
+        public void LoadFromJson(string Json)
         {
-            using (var rdr = new JsonTextReader(new StringReader(json)))
+            using (var rdr = new JsonTextReader(new StringReader(Json)))
             {
                 string propertyName = null;
                 object propertyValue = null;
@@ -149,14 +139,11 @@ namespace EzAdo.Models
                 }
             }
         }
-        
 
-        /// <summary>
-        /// Sets the parameter values from the given object where the object properties map to the
-        /// parameters.
-        /// </summary>
-        /// <typeparam name="T">    Type of object. </typeparam>
-        /// <param name="value">    object. </param>
+
+        /// <summary>Utilizes ObjectPropertyToParameterNameMapping to set the values of the parameters in the procedure</summary>
+        /// <typeparam name="T">Type of object containing the values.</typeparam>
+        /// <param name="value">Object containing values.</param>
         public void LoadFromObject<T>(T value)
         {
             ObjectPropertyToParameterNameMapping[] mappings = ProcedureFactory.GetParameterMapping<T>(_procedureName);
@@ -170,19 +157,16 @@ namespace EzAdo.Models
         #endregion
 
         #region |Constructor - Clone|
-        
-        /// <summary>   Create a new procedure. </summary>
-        /// <param name="connectionString"> Connection string with permissions to the appropriate schema. </param>
-        /// <param name="procedureName">    Name of Stored Procedure always in the format
-        /// [schema].[PROCEDURE_NAME]. </param>
-        /// <param name="isJsonResult">     Stored procedure is annotated with *Returns Json*. </param>
-        /// <param name="isSingleResult">   Stored procedure is annotated with *Single Result*. </param>
-        /// <param name="isNonQuery">       Stored procedure is annotated with *Non Query*. </param>
-        /// <param name="parameters">       Collection of parameters associated with the stored
-        /// procedure. </param>
-        /// <param name="parameterNameMap"> Collection of name mappings ie. @FIRST_NAME: {@FIRST_NAME,
-        /// FIRST_NAME, FirstName, firstName} </param>
-        public Procedure(string connectionString, string procedureName, bool isJsonResult, bool isSingleResult, bool isNonQuery, Dictionary<string,Models.Parameter> parameters, Dictionary<string,string> parameterNameMap)
+
+        /// <summary>Object Constructor. </summary>
+        /// <param name="connectionString">The connection string that this procedure requires.  Procedures annotated with *Always Encrypted* will append the connection with "Column Encryption Setting=enabled"</param>
+        /// <param name="procedureName">Name of the procedure in the format [specificSchema].[PROCEDURE_NAME].</param>
+        /// <param name="isJsonResult">Stored procedure annotation *Returns Json*. Informs the execution methods that the procedure returns Json.</param>
+        /// <param name="isSingleResult">Stored procedure annotation *Single Result*.  Informs the execution methods that the result is a single entity allowing Execute&lt;T&gt; vs. ExecuteList&lt;T&gt;.</param>
+        /// <param name="isNonQuery">Stored procedure annotation *Non Query*. Informs the execution methods that the procedure does not return a value.</param>
+        /// <param name="parameters">Collection of parameters associated with the stored procedure.</param>
+        /// <param name="parameterNameMap">A ParameterNameMap is a dictionary that maps a parameter name in the format @PARAMETER_NAME to any of the following variations FIRST_NAME, FirstName, and firstName.  The mapping prevents case conversion on every set or get.</param>
+        public Procedure(string connectionString, string procedureName, bool isJsonResult, bool isSingleResult, bool isNonQuery, Dictionary<string, Models.Parameter> parameters, Dictionary<string, string> parameterNameMap)
         {
             _connectionString = connectionString;
             _procedureName = procedureName;
@@ -192,9 +176,8 @@ namespace EzAdo.Models
             _parameters = parameters;
             _parameterNameMap = parameterNameMap;
         }
-        
-        /// <summary>   Create a new instance of the procedure. </summary>
-        /// <returns>   Models.Procedure cloned procedure. </returns>
+
+        /// <summary>Creates a deep copy of the procedure.</summary>
         public Procedure Clone()
         {
             Dictionary<string, string> parameterNameMap = new Dictionary<string, string>();
@@ -222,18 +205,11 @@ namespace EzAdo.Models
 
         #region |Procedure Execution|
 
-        /// <summary>
-        /// Executes procedure and returns json - works exclusively with procedures annotated with
-        /// *Returns Json*!
-        /// </summary>
-        /// <exception cref="InvalidOperationException"> Procedure is not annotated with *Returns Json*. </exception>
-        /// <returns>   System.String json result. </returns>
+        /// <summary>For *Returns Json* procedures where the raw Json result is the desired return type.</summary>
         public string ExecuteJson()
         {
-            if (_isJsonResult == false)
-            {
-                throw new InvalidOperationException("Procedure is not annotated with *Returns Json*");
-            }
+            if (!_isJsonResult) throw new InvalidOperationException("Procedure is not annotated with *Returns Json*.");
+            if (_isNonQuery) throw new InvalidOperationException("Procedures is annotated with *Non Query*.");
 
             checkValues();
 
@@ -258,123 +234,99 @@ namespace EzAdo.Models
             }
         }
 
-        /// <summary>   Executes procedure and returns Data Table. </summary>
-        /// <returns>   System.Data.DataTable result. </returns>
-        public DataTable ExecuteDataTable()
+        /// <summary>For *Returns Json* procedures where an object of T is the desired return type.</summary>
+        /// <typeparam name="T">Destination type of deserialization.</typeparam>
+        public T ExecuteJson<T>()
         {
-            if (_isJsonResult)
-            {
-                string JsonResult = ExecuteJson();
-                return (DataTable)JsonConvert.DeserializeObject(JsonResult, typeof(DataTable));
-            }
-            else
-            {
-                checkValues();
+            if (!_isSingleResult) throw new InvalidOperationException("Procedures is not annotated with *Single Result*");
+            string Json = ExecuteJson();
+            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.DeserializeObject<T>(Json);
+        }
 
-                using (SqlConnection cnn = new SqlConnection(_connectionString))
+        /// <summary>For *Returns Json* procedures where a List&lt;T&gt; is the desired return type.</summary>
+        /// <typeparam name="T">Destination type of deserialization.</typeparam>
+        public List<T> ExecuteJsonList<T>()
+        {
+            if (_isSingleResult) throw new InvalidOperationException("Procedures is annotated with *Single Result*.");
+            string Json = ExecuteJson();
+            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.DeserializeObject<List<T>>(Json);
+        }
+
+        /// <summary>For result set procedures where the desired return type is a Data Table.</summary>
+        public DataTable ExecuteReaderDataTable()
+        {
+            if (_isJsonResult) throw new InvalidOperationException("Procedure is annotated with *Returns Json*");
+            if (_isNonQuery) throw new InvalidOperationException("Procedures is annotated with *Non Query*");
+
+            checkValues();
+
+            using (SqlConnection cnn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = buildCommand(cnn))
                 {
-                    using (SqlCommand cmd = buildCommand(cnn))
+                    cnn.Open();
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
                     {
-                        cnn.Open();
-                        using (SqlDataReader rdr = cmd.ExecuteReader())
-                        {
-                            DataTable result = new DataTable();
-                            result.Load(rdr);
-                            rdr.Close();
-                            setReturnValues(cmd);
-                            cnn.Close();
-                            return result;
-                        }
-
+                        DataTable result = new DataTable();
+                        result.Load(rdr);
+                        rdr.Close();
+                        setReturnValues(cmd);
+                        cnn.Close();
+                        return result;
                     }
+
                 }
             }
         }
 
-        /// <summary>
-        /// Executes SqlDataReader and creates List T by populating from reader either explicitly or via
-        /// reflection.
-        /// </summary>
-        /// <exception cref="InvalidOperationException"> Procedure annotated with *Single Result* cannot
-        /// produce List. </exception>
-        /// <typeparam name="T">    System.Type of resulting List T. </typeparam>
-        /// <returns>   List of T. </returns>
-        public List<T> ExecuteList<T>()
+        /// <summary>For result set procedures where an object of T is the desired return type.  Uses implicit or explicit mapping.</summary>
+        /// <typeparam name="T">Destination type of mapping.</typeparam>
+        public T ExecuteReader<T>()
         {
-            if (_isSingleResult) throw new InvalidOperationException("Procedure annotated with *Single Result* cannot produce List<T>");
-
-            if (_isJsonResult)
-            {
-                string jsonResult = ExecuteJson();
-                var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-                return (List<T>)JsonConvert.DeserializeObject(jsonResult, typeof(List<T>), jsonSerializerSettings);
-            }
-            else
-            {
-                return buildList<T>();
-            }
-        }
-
-        /// <summary>
-        /// Executes SqlDataReader and creates List T by populating from reader either explicitly or via
-        /// refelction.  Converts resulting List to json.
-        /// </summary>
-        /// <typeparam name="T">    System.Type of resulting List T. </typeparam>
-        /// <returns>   System.String json result. </returns>
-        public string ExecuteJsonList<T>()
-        {
-            List<T> temp = ExecuteList<T>();
-            var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(temp, jsonSerializerSettings);
-        }
-
-        /// <summary>
-        /// Executes SqlDataReader and creates T by populating from reader either explicitly or via
-        /// reflection.
-        /// </summary>
-        /// <exception cref="InvalidOperationException"> Procedure requires annotation of *Single Result*
-        /// to return a single object. </exception>
-        /// <typeparam name="T">    System.Type of resulting T. </typeparam>
-        /// <returns>   Object T. </returns>
-        public T Execute<T>()
-        {
+            if (_isJsonResult) throw new InvalidOperationException("Procedures is annotated with *Returns Json* - use the ExecuteJson method instead");
             if (!_isSingleResult) throw new InvalidOperationException("Procedure requires annotation of *Single Result* to return a single object");
-
-            if (_isJsonResult)
+            List<T> lst = buildList<T>();
+            if (lst.Count == 1)
             {
-                string jsonResult = ExecuteJson();
-                var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-                return (T)JsonConvert.DeserializeObject(jsonResult, typeof(T), jsonSerializerSettings);
+                return lst[0];
             }
-            else
-            {
-                List<T> lst = buildList<T>();
-                if (lst.Count == 1)
-                {
-                    return lst[0];
-                }
-                return default(T);
-            }
+            return default(T);
         }
 
-        /// <summary>
-        /// Executes SqlDataReader and creates T by populating from reader either explicitly or
-        /// dynamically.  Converts resulting object to json.
-        /// </summary>
-        /// <typeparam name="T">    Type of object to populate from reader. </typeparam>
-        /// <returns>   System.String json result. </returns>
-        public string ExecuteJson<T>()
+        /// <summary>For result set procedures where a List of object of T is the desired return type.  Uses implicit or explicit mapping.</summary>  
+        /// <typeparam name="T">Destination type of mapped objects.</typeparam>
+        public List<T> ExecuteReaderList<T>()
         {
-            T temp = Execute<T>();
-            var jsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-            return JsonConvert.SerializeObject(temp,jsonSerializerSettings);
+            if (_isJsonResult) throw new InvalidOperationException("Procedures is annotated with *Returns Json* - use the ExecuteJson method instead");
+            if (_isSingleResult) throw new InvalidOperationException("Procedures is annotated with *Single Result*");
+            return buildList<T>();
         }
 
-        /// <summary>
-        /// Executes procedure with no results.  Ses the ouput parameters and return value;
-        /// </summary>
+        /// <summary>Utilizes ExecuteReader and serializes result to Json.</summary>
+        /// <typeparam name="T">Destination type of execute reader.</typeparam>
+        public string ExecuteReaderAsJson<T>()
+        {
+            T temp = ExecuteReader<T>();
+            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.SerializeObject(temp);
+        }
+
+        /// <summary>Utilizes ExecuteReaderList serializes result to Json.</summary>
+        /// <typeparam name="T">Destination type of execute reader.</typeparam>
+        public string ExecuteReaderListAsJson<T>()
+        {
+            List<T> temp = buildList<T>();
+            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            return JsonConvert.SerializeObject(temp);
+        }
+
+        /// <summary>Executes procedure with no results.  Sets the output parameters and return value.</summary>
         public void ExecuteNonQuery()
         {
+            if (!_isNonQuery) throw new InvalidOperationException("Procedure requires annotation of *Non Query*.");
+
             checkValues();
 
             using (SqlConnection cnn = new SqlConnection(_connectionString))
@@ -389,26 +341,13 @@ namespace EzAdo.Models
             }
         }
 
-        /// <summary>
-        /// Builds the SqlCommand based on the Parameter Definitions and values, binds the connection
-        /// passed in to the command.
-        /// </summary>
-        /// <param name="cnn">  The cnn. </param>
-        /// <returns>   A SqlCommand. </returns>
+        //Builds the SqlCommand based on the Parameter Definitions and values, binds the connection passed in to the command.
         private SqlCommand buildCommand(SqlConnection cnn)
         {
             SqlCommand cmd = new SqlCommand();
 
-            if (_dynamicQuery != null)
-            {
-                cmd.CommandText = _dynamicQuery;
-                cmd.CommandType = CommandType.Text;
-            }
-            else
-            {
-                cmd.CommandText = _procedureName;
-                cmd.CommandType = CommandType.StoredProcedure;
-            }
+            cmd.CommandText = _procedureName;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             foreach (Parameter parameter in _parameters.Values)
             {
@@ -420,16 +359,22 @@ namespace EzAdo.Models
             return cmd;
         }
 
-        /// <summary>   Builds List of T either via reflection or supported IExplicitMap. </summary>
-        /// <typeparam name="T">    Generic type parameter. </typeparam>
-        /// <returns>   List T; </returns>
+        //Builds List of T either via reflection or supported IExplicitMap.
         private List<T> buildList<T>()
         {
             checkValues();
 
             List<T> result = null;
 
-            bool builtFromExplicit = false;
+            bool buildFromExplicit = false;
+            T temp = Activator.CreateInstance<T>();
+            if (typeof(T).GetInterfaces().Contains(typeof(IExplicitMap)))
+            {
+                if (((IExplicitMap)temp).SupportsMap(_procedureName))
+                {
+                    buildFromExplicit = true;
+                }
+            }
 
             using (SqlConnection cnn = new SqlConnection(_connectionString))
             {
@@ -438,16 +383,11 @@ namespace EzAdo.Models
                     cnn.Open();
                     using (SqlDataReader rdr = cmd.ExecuteReader())
                     {
-                        if (typeof(T).GetInterfaces().Contains(typeof(IExplicitMap)))
+                        if(buildFromExplicit)
                         {
-                            T temp = Activator.CreateInstance<T>();
-                            if (((IExplicitMap)temp).SupportsMap(_procedureName))
-                            {
-                                result = buildListExplicit<T>(rdr);
-                                builtFromExplicit = true;
-                            }
+                            result = buildListExplicit<T>(rdr);
                         }
-                        if (!builtFromExplicit)
+                        else
                         {
                             result = buildListReflection<T>(rdr);
                         }
@@ -460,10 +400,7 @@ namespace EzAdo.Models
             return result;
         }
 
-        /// <summary>   Builds a list when the object implements IExplicitMap. </summary>
-        /// <typeparam name="T">    Generic type parameter. </typeparam>
-        /// <param name="rdr">  The reader. </param>
-        /// <returns>   List T </returns>
+        //Builds a list when the object implements IExplicitMap. 
         private List<T> buildListExplicit<T>(SqlDataReader rdr)
         {
             List<T> result = new List<T>();
@@ -477,10 +414,7 @@ namespace EzAdo.Models
             return result;
         }
 
-        /// <summary>   Builds a list using reflection. </summary>
-        /// <typeparam name="T">    Generic type parameter. </typeparam>
-        /// <param name="rdr">  The reader. </param>
-        /// <returns>   List T </returns>
+        //Builds a list using reflection.
         private List<T> buildListReflection<T>(SqlDataReader rdr)
         {
             List<T> result = new List<T>();
@@ -499,8 +433,7 @@ namespace EzAdo.Models
             return result;
         }
 
-        /// <summary>   Sets parameters to return and output parameter values. </summary>
-        /// <param name="cmd">  The command. </param>
+        //Sets parameters to return and output parameter values.
         private void setReturnValues(SqlCommand cmd)
         {
             foreach (SqlParameter parameter in cmd.Parameters)
@@ -519,9 +452,7 @@ namespace EzAdo.Models
 
         #region |Accessors|
 
-        /// <summary>   Short cut to getting or setting the values through indexer. </summary>
-        /// <param name="name"> Name see Parameter Name Map </param>
-        /// <returns>   Parameter value. </returns>
+        /// <summary>Gets or sets the value of parameter at [name].</summary>
         public object this[string name]
         {
             set
@@ -534,49 +465,40 @@ namespace EzAdo.Models
             }
         }
 
-
-        /// <summary>   Returns the Command Return_Value. </summary>
-        /// <typeparam name="T">    Generic type parameter. </typeparam>
-        /// <returns>   The value. </returns>
+        /// <summary>Short cut to get parameter named RETURN_VALUE.</summary>
+        /// <typeparam name="T">Generic type parameter.</typeparam>
         public T ReturnValue<T>()
         {
             return GetValue<T>("@RETURN_VALUE");
         }
 
-
-        /// <summary>   Gets the parameter value as T based on the parameter name. </summary>
-        /// <typeparam name="T">    type of return value. </typeparam>
-        /// <param name="name"> name of parameter. </param>
-        /// <returns>   value as T. </returns>
+        /// <summary>Gets the parameter value as T based on the parameter name.</summary>
+        /// <typeparam name="T">Type of return value.</typeparam>
+        /// <param name="name">Name of parameter.</param>
         public T GetValue<T>(string name)
         {
             return _parameters[mapParameterName(name)].GetValue<T>();
         }
 
-
-        /// <summary>   Sets the value as T based on the name. </summary>
-        /// <typeparam name="T">    type of value. </typeparam>
-        /// <param name="name">     name of parameter. </param>
-        /// <param name="value">    value of parameter. </param>
+        /// <summary>Sets the value as T based on the name.</summary>
+        /// <typeparam name="T">Type of value.</typeparam>
+        /// <param name="name">Name of parameter.</param>
+        /// <param name="value">Value of parameter.</param>
         public void SetValue<T>(string name, T value)
         {
             string parameterName = mapParameterName(name);
             _parameters[parameterName].SetValue<T>(value);
         }
 
-
-        /// <summary>   Finds a parameter by any of the name variations. </summary>
-        /// <param name="paramaterName">    . </param>
-        /// <returns>   The parameter. </returns>
+        /// <summary>Finds a parameter by any of the name variations.</summary>
+        /// <param name="paramaterName">Name or name variation @PARAMETER_NAME, PARAMETER_NAME, ParameterName, parameterName</param>
         public Parameter GetParameter(string paramaterName)
         {
             return _parameters[mapParameterName(paramaterName)];
         }
 
-
-        /// <summary>   Cehcks it the parameter is in the collection. </summary>
-        /// <param name="parameterName">    . </param>
-        /// <returns>   true if it succeeds, false if it fails. </returns>
+        /// <summary>Checks if the parameter is in the collection.</summary>
+        /// <param name="parameterName">Name or name variation @PARAMETER_NAME, PARAMETER_NAME, ParameterName, parameterName</param>
         public bool ContainsParameter(string parameterName)
         {
             return _parameterNameMap.ContainsKey(parameterName);
@@ -584,10 +506,9 @@ namespace EzAdo.Models
 
         #endregion
 
-        #region |Helpers}|
+        #region |Helpers|
 
-
-        /// <summary>   Checks all the procedures for null values against isNullable. </summary>
+        //Checks all the procedures for null values against isNullable.
         private void checkValues()
         {
             foreach (Parameter parameter in _parameters.Values)
@@ -596,15 +517,10 @@ namespace EzAdo.Models
             }
         }
 
-
-        /// <summary>   Private method to get @FULL_NAME from any of the name variations. </summary>
-        /// <exception cref="IndexOutOfRangeException"> Thrown when the index is outside the required
-        /// range. </exception>
-        /// <param name="name"> @FULL_NAME, SHORT_NAME, ProperCase, or camelCase parameter name. </param>
-        /// <returns>   @FULL_NAME. </returns>
+        //Private method to get @FULL_NAME from any of the name variations. 
         private string mapParameterName(string name)
         {
-            if(!_parameterNameMap.ContainsKey(name))
+            if (!_parameterNameMap.ContainsKey(name))
             {
                 throw new IndexOutOfRangeException($"Index out of range Procedure.mapParameterName({name})");
             }

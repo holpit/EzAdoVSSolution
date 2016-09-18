@@ -9,9 +9,8 @@ namespace EzAdo.Converters
     /// <summary>   A dto.procedure to model.procedure converter </summary>
     public static class DtoProcedureToModelProcedure
     {
-        /// <summary>   Routine to handle the conversion of the dto.Procedure to model.Procedure. </summary>
-        /// <param name="source">   Source dto.Procedure to convert. </param>
-        /// <returns>   Converted Procedure. </returns>
+        /// <summary>Routine to handle the conversion of the dto.Procedure to model.Procedure.</summary>
+        /// <param name="source">Source dto.Procedure to convert.</param>
         public static Procedure Convert(dto.Procedure source)
         {
             //Only place this should ever be set!
@@ -23,7 +22,7 @@ namespace EzAdo.Converters
             Procedure proc = new Procedure
                 (
                     source.ConnectionString,
-                    procedureName, source.IsJsonResult,
+                    procedureName, source.isJsonResult,
                     source.IsSingleResult,
                     source.IsNonQuery,
                     parameters,
@@ -33,9 +32,7 @@ namespace EzAdo.Converters
             return proc;
         }
 
-        /// <summary>   Builds the model.Parameters from the dto.Parameter definitions. </summary>
-        /// <param name="source">   Source dto.Procedure to convert. </param>
-        /// <returns>   Dictionary of model.Parameters </returns>
+        //Builds the model.Parameters from the dto.Parameter definitions.
         private static Dictionary<string, Models.Parameter> buildParameters(dto.Procedure source)
         {
             Dictionary<string,Parameter> parms = new Dictionary<string, Parameter>();
@@ -62,10 +59,7 @@ namespace EzAdo.Converters
             return parms;
         }
 
-        /// <summary>   Builds parameter name mapping.  The parameter name map allows quick mapping of friendly names to the actual parameter name
-        ///             ie. @FIRST_NAME maps to @FIRST_NAME, FIRST_NAME, FirstName and firstName </summary>
-        /// <param name="source">   Source dto.Procedure containing the native parameter name. </param>
-        /// <returns>   Dictionary of name mappings with the native parameter name as the key; </returns>
+        //Builds parameter name mapping.  The parameter name map allows quick mapping of friendly names to the actual parameter name @FIRST_NAME maps to @FIRST_NAME, FIRST_NAME, FirstName and firstName 
         private static Dictionary<string, string> buildParameterNameMapping(dto.Procedure source)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -74,12 +68,12 @@ namespace EzAdo.Converters
             {
                 string parameterName = dtoParm.ParameterName;
                 string shortName = dtoParm.ParameterName.Substring(1); //pulls off @
-                string jsonName = shortName.ToCamel();
+                string JsonName = shortName.ToCamel();
                 string propertyName = shortName.ToProperCase();
 
                 result.Add(parameterName, parameterName);
                 result.Add(shortName, parameterName);
-                result.Add(jsonName, parameterName);
+                result.Add(JsonName, parameterName);
                 result.Add(propertyName, parameterName);
             }
             return result;

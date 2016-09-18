@@ -27,7 +27,7 @@ VALUES
 	('open','POST_PERSON','@EMAIL', NULL, NULL, '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$'),
 	('open','PUT_PERSON','@EMAIL', NULL, NULL, '^[a-zA-Z0-9.!#$%&''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$')
 
-MERGE INTO dbo.REST_SQL_VALIDATORS TARGET
+MERGE INTO dbo.EZ_ADO_VALIDATORS TARGET
 USING
 	(
 		SELECT

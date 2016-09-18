@@ -1,66 +1,51 @@
 ﻿namespace EzAdo.dto
 {
-    /// <summary>   A dto.Parameter populated in the ProcedureFactory and utilized in building the model.Parameters. </summary>
+    /// <summary>A dto.Parameter populated in the ProcedureFactory and utilized in building the model.Parameters.</summary>
     public class Parameter
     {
-        /// <summary>   Gets or sets the ordinal position. </summary>
-        /// <value> The ordinal position. </value>
+        /// <summary>Gets or sets the ordinal position.</summary>
         public int OrdinalPosition { set; get; }
 
-        /// <summary>   Gets or sets the parameter mode. </summary>
-        /// <value> The parameter mode. </value>
+        /// <summary>Gets or sets the parameter mode.</summary>
         public string ParameterMode { set; get; }
 
-        /// <summary>   Gets or sets a value indicating whether this parameter is a result. </summary>
-        /// <value> true if this parameter is a result, false if not.. </value>
+        /// <summary>Gets or sets a value indicating whether this parameter is a result.</summary>
         public string IsResult { set; get; }
 
-        /// <summary>   Gets or sets the name of the parameter. </summary>
-        /// <value> The name of the parameter. </value>
+        /// <summary>Gets or sets the name of the parameter.</summary>
         public string ParameterName { set; get; }
 
-        /// <summary>   Gets or sets the SqlServer data type name. </summary>
-        /// <value> The data type name. </value>
+        /// <summary>Gets or sets the SqlServer data type name.</summary>
         public string DataType { set; get; }
 
-        /// <summary>   Gets or sets the numeric precision. </summary>
-        /// <value> The numeric precision. </value>
+        /// <summary>Gets or sets the numeric precision.</summary>
         public byte? NumericPrecision { set; get; }
 
-        /// <summary>   Gets or sets the numeric scale. </summary>
-        /// <value> The numeric scale. </value>
+        /// <summary>Gets or sets the numeric scale.</summary>
         public int? NumericScale { set; get; }
 
-        /// <summary>   Gets or sets the maximum character length. </summary>
-        /// <value> The maximum character length. </value>
+        /// <summary>Gets or sets the maximum character length.</summary>
         public int? CharacterMaximumLength { set; get; }
 
-        /// <summary>   Gets or sets the date time precision. </summary>
-        /// <value> The date time precision. </value>
+        /// <summary>Gets or sets the date time precision.</summary>
         public short? DateTimePrecision { set; get; }
 
-        /// <summary>   Gets or sets the numeric minimum value. </summary>
-        /// <value> The numeric minimum value. </value>
+        /// <summary>Gets or sets the numeric minimum value.</summary>
         public long? NumericMinimumValue { set; get; }
 
-        /// <summary>   Gets or sets the numeric maximum value. </summary>
-        /// <value> The numeric maximum value. </value>
+        /// <summary>Gets or sets the numeric maximum value.</summary>
         public long? NumericMaximumValue { set; get; }
 
-        /// <summary>   Gets or sets the regular expression. </summary>
-        /// <value> The regular expression. </value>
+        /// <summary>Gets or sets the regular expression.</summary>
         public string RegularExpression { set; get; }
 
-        /// <summary>   Gets or sets a value indicating whether this object is nullable. </summary>
-        /// <value> true if this object is nullable, false if not. </value>
+        /// <summary>Gets or sets a value indicating whether this object is nullable.</summary>
         public bool IsNullable { set; get; }
 
-        /// <summary>   Gets or sets the user defined type schema. </summary>
-        /// <value> The user defined type schema. </value>
+        /// <summary>Gets or sets the user defined type schema.</summary>
         public string UserDefinedTypeSchema { set; get; }
 
-        /// <summary>   Gets or sets the name of the user defined type. </summary>
-        /// <value> The name of the user defined type. </value>
+        /// <summary>Gets or sets the name of the user defined type.</summary>
         public string UserDefinedTypeName { set; get; }
     }
 }

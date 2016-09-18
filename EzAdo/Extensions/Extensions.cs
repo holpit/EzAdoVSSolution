@@ -1,11 +1,10 @@
 ﻿namespace EzAdo.Extensions
 {
-    /// <summary>   Extension methods for converting string values. </summary>
+    /// <summary>Extension methods for converting string values.</summary>
     public static class Extensions
     {
-        /// <summary>   A string extension method that converts a string to underscore case. </summary>
-        /// <param name="value">    The value to act on. </param>
-        /// <returns>   value as a string. </returns>
+        /// <summary>A string extension method that converts a string to underscore case.</summary>
+        /// <param name="value">The value to act on.</param>
         public static string ToUnderscore(this string value)
         {
             if (string.IsNullOrEmpty(value)) return value;
@@ -35,9 +34,8 @@
             return new string(output, 0, outPos);
         }
 
-        /// <summary>   A string extension method that converts a value string to ProperCase. </summary>
-        /// <param name="value">    The value to act on. </param>
-        /// <returns>   value as a string. </returns>
+        /// <summary>A string extension method that converts a value string to ProperCase.</summary>
+        /// <param name="value">The value to act on.</param>
         public static string ToProperCase(this string value)
         {
             if (string.IsNullOrEmpty(value)) return value;
@@ -71,9 +69,8 @@
 
         }
 
-        /// <summary>   A string extension method that converts a string to a cameCase. </summary>
-        /// <param name="value">    The value to act on. </param>
-        /// <returns>   value as a string. </returns>
+        /// <summary>A string extension method that converts a string to a cameCase.</summary>
+        /// <param name="value">The value to act on.</param>
         public static string ToCamel(this string value)
         {
             if (string.IsNullOrEmpty(value)) return value;
