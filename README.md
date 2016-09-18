@@ -56,6 +56,7 @@ There are several points you need to concede up front. If the following is contr
 3. Each schema is mapped to a particular login, and subsequently a connections string identified by the schema.
 4. Naming conventions must be followed.
 
+
 #Things to know to shorten the learning curve.
 
 ###Schemas
